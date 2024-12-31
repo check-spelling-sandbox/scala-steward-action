@@ -17,6 +17,8 @@ jobs:
   new-release:
     name: Create new release
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.released.outputs.tag }}
     permissions:
       contents: write
     steps:
@@ -30,6 +32,12 @@ jobs:
         with:
           node-version: '20'
 
+      - name: List existing tags
+        run: |
+          : List existing tags
+          .github/workflows/find-tags.sh > ../existing-tags
+          mv .github/workflows/find-tags.sh ..
+
       - name: Run `npm install`
         run: npm install
 
@@ -41,10 +49,24 @@ jobs:
         with:
           major-version: 2
 
+      - name: Find released version
+        id: released
+        # int128/release-typescript-action has no outputs!
+        run: |
+          : Find released version
+          tags=$(mktemp)
+          ../find-tags.sh > ../new-tags
+          diff -U0 ../existing-tags ../new-tags | perl -ne 'next unless s<^\+[0-9a-f]{40}\s+refs/tags/><>; print' > "$tags"
+          if [ $(grep -c . "$tags" ) = 1 ]; then
+            echo "tag=$(cat "$tags")" >> "$GITHUB_OUTPUT"
+          fi
+
   update-docs:
     name: Update documentation
     if: ${{ github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
+    needs:
+      - new-release
     permissions:
       contents: write
     steps:
@@ -53,6 +75,24 @@ jobs:
         with:
           fetch-depth: 0
           ref: master
+
+      - name: Update composite action
+        if: ${{ needs.new-release.outputs.version }}
+        env:
+          version: ${{ needs.new-release.outputs.version }}
+        run: |
+          : Update composite action
+          git config user.name github-actions
+          git config user.email 'github-actions@github.com'
+          if ! git diff --quiet; then
+            git add -u
+            git commit -m '(Unexpected changes) [skip ci]'
+          fi
+          .github/workflows/update-action.pl
+          if ! git diff --quiet; then
+            git add action.yml
+            git commit -m "Update action to use $version"
+          fi
 
       - name: Run `npm install`
         run: npm install

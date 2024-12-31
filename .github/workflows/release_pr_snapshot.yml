@@ -46,6 +46,13 @@ jobs:
       - name: Remove `dist` from `.gitignore`
         run: sed -i -E 's|^/?dist/?||g' .gitignore
 
+      - name: Update action.yml
+        env:
+          version: snapshots/${{ steps.extract-pr-number.outputs.PR_NUMBER }}
+        run: |
+          : Update action.yml
+          .github/workflows/update-action.pl
+
       - name: Create snapshot branch
         uses: alejandrohdezma/actions/commit-and-push@v1
         with:
