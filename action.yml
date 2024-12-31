@@ -182,5 +182,6 @@ runs:
   using: composite
   steps:
   - uses: sbt/setup-sbt@v1.1.5
+
   - uses: scala-steward-org/scala-steward-action@v2.72.0
     with: ${{ inputs }}
