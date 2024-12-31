@@ -1,6 +1,7 @@
 // Copy inputs from `action.yml` into `README.md`
 
 import * as fs from 'fs'
+import * as process from 'process'
 import * as yaml from 'js-yaml'
 
 /**
@@ -27,10 +28,12 @@ const readme = fs.readFileSync('README.md', {encoding: 'utf8'})
 const start = readme.indexOf('<!-- start usage -->') + '<!-- start usage -->'.length
 const end = readme.indexOf('<!-- end usage -->')
 
+const githubRepository = process.env.GITHUB_REPOSITORY ?? 'scala-steward-org/scala-steward-action'
+
 const content = [
   readme.slice(0, start),
   '```yaml',
-  '- uses: scala-steward-org/scala-steward-action@v2',
+  '- uses: ' + githubRepository + '@v2',
   '  with:',
   ...inputs.slice(1),
   '```',

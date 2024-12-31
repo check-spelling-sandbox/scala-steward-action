@@ -61,7 +61,7 @@ jobs:
             You can test it out with:
 
             ```yaml
-            uses: scala-steward-org/scala-steward-action@snapshots/${{ steps.extract-pr-number.outputs.PR_NUMBER }}
+            uses: ${{ github.repository }}@snapshots/${{ steps.extract-pr-number.outputs.PR_NUMBER }}
             ```
 
             It will be automatically recreated on any change to this PR.
