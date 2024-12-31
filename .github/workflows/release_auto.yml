@@ -39,9 +39,11 @@ jobs:
 
       - name: Run `npm install`
         run: npm install
+        working-directory: node-action
 
       - name: Run `npm run build`
         run: npm run build
+        working-directory: node-action
 
       - name: Release new version
         uses: int128/release-typescript-action@bda6cf3f777afe2f8329cbaa57b4ebd95622a9f4 # v1.31.0
@@ -95,9 +97,14 @@ jobs:
 
       - name: Run `npm install`
         run: npm install
+        working-directory: node-action
 
       - name: Run `npm run docs`
-        run: npm run docs
+        run: |
+          git mv ../README.md .
+          npm run docs
+          git mv README.md ..
+        working-directory: node-action
 
       - name: Commit changes by `npm run docs`
         uses: alejandrohdezma/actions/commit-and-push@v1
