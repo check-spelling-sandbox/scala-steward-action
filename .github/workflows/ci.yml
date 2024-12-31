@@ -15,9 +15,11 @@ jobs:
 
       - name: Run `npm install`
         run: npm install
+        working-directory: node-action
 
       - name: Run `npm run all`
         run: npm run all
+        working-directory: node-action
 
       - name: Save PR number
         if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
@@ -37,11 +39,11 @@ jobs:
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: dist
-          path: dist/
+          path: node-action/dist/
 
       - name: Upload artifact with `covertura.xml`
         if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
         uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
         with:
           name: cobertura
-          path: coverage/cobertura-coverage.xml
+          path: node-action/coverage/cobertura-coverage.xml
