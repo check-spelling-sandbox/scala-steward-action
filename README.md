@@ -158,7 +158,7 @@ When it launches it will send PR to update all the repos selected in step (2.2).
 
 <!-- start usage -->
 ```yaml
-- uses: scala-steward-org/scala-steward-action@v2
+- uses: check-spelling-sandbox/scala-steward-action@v2
   with:
     # Artifact migrations for newer versions of artifacts with
     # different group Ids, artifact ids, or both different.
