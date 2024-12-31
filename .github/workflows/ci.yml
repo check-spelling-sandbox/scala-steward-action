@@ -21,7 +21,9 @@ jobs:
 
       - name: Save PR number
         if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
-        run: echo ${{ github.event.number }} > PR_NUMBER
+        env:
+          PR_NUMBER: ${{ github.event.number }}
+        run: echo "$PR_NUMBER" > PR_NUMBER
 
       - name: Upload artifact with `PR_NUMBER`
         if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' }}
