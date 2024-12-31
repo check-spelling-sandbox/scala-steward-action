@@ -52,9 +52,11 @@ jobs:
 
       - name: Run `npm install`
         run: npm install
+        working-directory: node-action
 
       - name: Run `npm run docs`
         run: npm run docs
+        working-directory: node-action
 
       - name: Commit changes by `npm run docs`
         uses: alejandrohdezma/actions/commit-and-push@v1
