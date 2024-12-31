@@ -9,6 +9,9 @@ on:
 jobs:
   release-snapshot-artifact:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Download PR_NUMBER

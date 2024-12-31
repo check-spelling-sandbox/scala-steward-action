@@ -9,6 +9,9 @@ on:
 jobs:
   add-comment-with-code-coverage:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' && github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout project
