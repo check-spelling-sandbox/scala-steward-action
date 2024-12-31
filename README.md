@@ -2,6 +2,7 @@
 
 A GitHub Action to launch [Scala Steward](https://github.com/scala-steward-org/scala-steward) in your repository.
 
+
 <!-- toc -->
 
 - [Installation](#installation)
