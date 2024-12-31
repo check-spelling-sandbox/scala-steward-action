@@ -46,6 +46,13 @@ jobs:
         run: npm run build
         working-directory: node-action
 
+      - name: Suppress push
+        run: |
+          : Suppress push
+          git fetch --tags --prune-tags --prune || true
+          git remote rename origin upstream
+          git remote add origin .
+
       - name: Release new version
         uses: int128/release-typescript-action@bda6cf3f777afe2f8329cbaa57b4ebd95622a9f4 # v1.31.0
         with:
