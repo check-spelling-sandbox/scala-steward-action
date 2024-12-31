@@ -56,8 +56,11 @@ jobs:
         # int128/release-typescript-action has no outputs!
         run: |
           : Find released version
+          set -x
           tags=$(mktemp)
           ../find-tags.sh > ../new-tags
+          cat ../existing-tags
+          cat ../new-tags
           diff -U0 ../existing-tags ../new-tags | perl -ne 'next unless s<^\+[0-9a-f]{40}\s+refs/tags/><>; print' > "$tags"
           if [ $(grep -c . "$tags" ) = 1 ]; then
             echo "tag=$(cat "$tags")" >> "$GITHUB_OUTPUT"
