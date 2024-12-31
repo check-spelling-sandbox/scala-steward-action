@@ -41,10 +41,10 @@ jobs:
         with:
           run_id: ${{github.event.workflow_run.id }}
           name: dist
-          path: dist
+          path: node-action/dist
 
       - name: Remove `dist` from `.gitignore`
-        run: sed -i -E 's|^/?dist/?||g' .gitignore
+        run: perl -pi -e 's#^/?(?:node-action/|)dist/?\n##g' .gitignore
 
       - name: Update action.yml
         env:
