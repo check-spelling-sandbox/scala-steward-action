@@ -6,6 +6,7 @@ open my $action_in, '<', $action_file;
 open my $action_out, '>', $action_temp;
 my $state;
 my $repository = $ENV{GITHUB_REPOSITORY};
+my $repository_or_upstream = "(?:scala-steward-org/scala-steward-action|$repository)";
 my $version = $ENV{version};
 while (<$action_in>) {
   if ($state == 0) {
@@ -15,8 +16,8 @@ while (<$action_in>) {
   } elsif ($state == 2) {
     if (m{uses:\s+sbt/setup-sbt}) {
       # definitely not the right step
-    } elsif (m<uses: $repository>) {
-      s<$repository(?:/node-action|)\@\S+><$repository/node-action\@$version>;
+    } elsif (m<uses: $repository_or_upstream>) {
+      s<$repository_or_upstream(?:/node-action|)\@\S+><$repository/node-action\@$version>;
       $state = 3;
     }
   }
